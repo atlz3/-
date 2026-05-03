@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Счётчик, считающий в обратном порядке и добавляющий случайные числа">
+    <title>Обратный счётчик</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .counter-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .counter-title {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .counter-subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 30px;
+            font-size: 0.95rem;
+        }
+
+        .display-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+        }
+
+        .display-label {
+            font-size: 0.9rem;
+            opacity: 0.9;
+            margin-bottom: 10px;
+        }
+
+        .display-number {
+            font-size: 4rem;
+            font-weight: 700;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .button-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .action-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .btn-down {
+            background: #e74c3c;
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .btn-down:hover {
+            background: #c0392b;
+            transform: translateY(-2px);
+        }
+
+        .btn-random {
+            background: #9b59b6;
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .btn-random:hover {
+            background: #8e44ad;
+            transform: translateY(-2px);
+        }
+
+        .btn-reset {
+            background: #27ae60;
+            box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+            grid-column: 1 / -1;
+        }
+
+        .btn-reset:hover {
+            background: #229954;
+            transform: translateY(-2px);
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .back-link {
+            text-align: center;
+        }
+
+        @media (max-width: 480px) {
+            .counter-container {
+                padding: 25px;
+            }
+
+            .display-number {
+                font-size: 3rem;
+            }
+
+            .button-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="counter-container">
+            <h1 class="counter-title">⬇️ Обратный счётчик</h1>
+            <p class="counter-subtitle">Считает в обратном порядке, добавляет случайные числа и вообще ведёт себя странно!</p>
+            
+            <div class="display-box">
+                <div class="display-label">Текущее значение:</div>
+                <div class="display-number" id="counterDisplay">100</div>
+            </div>
+
+            <div class="info-box">
+                Это не обычный счётчик! Здесь ничего не имеет смысла! 🤪
+            </div>
+
+            <div class="button-grid">
+                <button class="action-btn btn-down" onclick="decrementCounter()">➖ Минус 1</button>
+                <button class="action-btn btn-random" onclick="addRandom()">🎲 Случайное число</button>
+                <button class="action-btn btn-reset" onclick="resetCounter()">🔄 Сброс на 100</button>
+            </div>
+
+            <div class="back-link">
+                <a href="index.html" class="link">← Вернуться на главную</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        let counter = 100;
+
+        function updateDisplay() {
+            document.getElementById('counterDisplay').textContent = counter;
+            localStorage.setItem('backwardsCounter', counter);
+        }
+
+        function decrementCounter() {
+            counter--;
+            
+            // Случайный эффект
+            if (Math.random() > 0.7) {
+                counter -= Math.floor(Math.random() * 5);
+                alert('Опа! Прыгнуло на случайное число! 🤡');
+            }
+            
+            updateDisplay();
+        }
+
+        function addRandom() {
+            const random = Math.floor(Math.random() * 50) - 25; // -25 до 25
+            counter += random;
+            alert(`Добавили ${random > 0 ? '+' : ''}${random} 🎲`);
+            updateDisplay();
+        }
+
+        function resetCounter() {
+            counter = 100;
+            updateDisplay();
+        }
+
+        // Загрузка из localStorage
+        const saved = localStorage.getItem('backwardsCounter');
+        if (saved) {
+            counter = parseInt(saved);
+            updateDisplay();
+        }
+    </script>
+</body>
+</html>
