@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Самая тупая страница ошибок">
+    <title>404 - Ошибка тупости</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        }
+
+        .error-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .error-code {
+            font-size: 5rem;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 20px;
+            animation: wobble 0.5s infinite;
+        }
+
+        @keyframes wobble {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-emoji {
+            font-size: 4rem;
+            margin: 20px 0;
+            animation: spin 2s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error-title {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        .error-message {
+            color: #666;
+            font-size: 1.1rem;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .error-reason {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            color: #856404;
+            font-style: italic;
+        }
+
+        .random-text {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            color: #667eea;
+            font-weight: 600;
+            min-height: 30px;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+        }
+
+        .btn-random {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-random:hover {
+            background: #764ba2;
+            transform: translateY(-2px);
+        }
+
+        .btn-home {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-home:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .suggestions {
+            background: #e7f3ff;
+            padding: 20px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin: 20px 0;
+        }
+
+        .suggestions p {
+            color: #333;
+            margin: 10px 0;
+        }
+
+        @media (max-width: 480px) {
+            .error-container {
+                padding: 25px;
+            }
+
+            .error-code {
+                font-size: 3rem;
+            }
+
+            .error-emoji {
+                font-size: 2rem;
+            }
+
+            .error-title {
+                font-size: 1.5rem;
+            }
+
+            .btn {
+                font-size: 0.9rem;
+                padding: 10px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="error-container">
+            <div class="error-code" id="errorCode">404</div>
+            <div class="error-emoji" id="emoji">❌</div>
+            
+            <h1 class="error-title">Упс! Страница не найдена</h1>
+            <p class="error-message">Похоже, ты заблудился в лабиринте тупости...</p>
+            
+            <div class="error-reason">
+                🤔 <strong>Почему это произошло?</strong>
+                <p id="reason" style="margin-top: 10px;">Ты нажал на несуществующую ссылку, или просто проверяешь мою тупость!</p>
+            </div>
+
+            <div class="random-text" id="randomText">
+                "Помни: ошибка — это просто возможность сделать новую ошибку!"
+            </div>
+
+            <div class="suggestions">
+                <p>💡 <strong>Что ты можешь сделать:</strong></p>
+                <p>• Вернуться на главную страницу</p>
+                <p>• Нажать кнопку "На случайную страницу"</p>
+                <p>• Просто наслаждаться этой ошибкой 😂</p>
+            </div>
+
+            <div class="button-group">
+                <button class="btn btn-random" onclick="goToRandomPage()">🎲 Случайная страница</button>
+                <button class="btn btn-home" onclick="goHome()">🏠 На главную</button>
+            </div>
+
+            <div class="error-reason">
+                ⚠️ <strong>Кодекс тупости:</strong>
+                <p style="margin-top: 10px; font-style: normal;">
+                    "404 означает, что ты нашёл идеальное место для ещё больше тупости!"
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const emojis = ['❌', '🤡', '😵', '🎪', '💥', '🔥', '⚡', '✨', '🌪️', '🎭'];
+        const errorReasons = [
+            'Ты проверяешь, есть ли 404 страница. Спойлер: она есть!',
+            'Эта страница была съедена компьютерным вирусом (он тоже тупой).',
+            'Разработчик забыл создать эту страницу. Привет от разработчика!',
+            'Страница нашла более интересное место во вселенной.',
+            'Это не ошибка, это фишка! Поздравляем! 🎉',
+            'Страница вышла в отпуск и не вернулась.',
+            'Код сломался от смеха над собственной тупостью.',
+            'Ты нашёл пасхалку! Но это не она.',
+            'Квантовая суперпозиция: страница одновременно существует и нет!',
+            'Маршрут был съеден кошкой разработчика.'
+        ];
+
+        const quotes = [
+            '"404: Мой код как моя жизнь - не имеет смысла"',
+            '"Ошибка 404: Здравый смысл не найден"',
+            '"Если ты видишь это, то тебе НЕ повезло!"',
+            '"404 = For O For Four... или что-то в этом роде"',
+            '"Этот HTTP код тупо потерялся"',
+            '"У меня нет идеи, почему ты здесь"',
+            '"Может быть, попробуешь CTRL+Z?"',
+            '"Сожалею, но даже я не знаю, что здесь происходит"'
+        ];
+
+        const pages = ['index.html', 'stupid-quiz.html', 'button-spam.html', 'generator.html', 'counter-backwards.html', 'confetti.html', 'tupoi.html', 'kartinka.html'];
+
+        function changeEmoji() {
+            const emoji = document.getElementById('emoji');
+            const randomEmoji = emojis[Math.floor(Math.random() * emojis.length)];
+            emoji.textContent = randomEmoji;
+        }
+
+        function changeReason() {
+            const reason = document.getElementById('reason');
+            const randomReason = errorReasons[Math.floor(Math.random() * errorReasons.length)];
+            reason.textContent = randomReason;
+        }
+
+        function changeQuote() {
+            const randomText = document.getElementById('randomText');
+            const randomQuote = quotes[Math.floor(Math.random() * quotes.length)];
+            randomText.textContent = randomQuote;
+        }
+
+        function goToRandomPage() {
+            const randomPage = pages[Math.floor(Math.random() * pages.length)];
+            window.location.href = randomPage;
+        }
+
+        function goHome() {
+            window.location.href = 'index.html';
+        }
+
+        // Меняем элементы каждые 3 секунды
+        setInterval(changeEmoji, 3000);
+        setInterval(changeReason, 4000);
+        setInterval(changeQuote, 5000);
+
+        // Начальные значения
+        changeReason();
+        changeQuote();
+    </script>
+</body>
+</html>
