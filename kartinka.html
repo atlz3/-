@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Страница с сообщением об отсутствии изображения">
+    <title>Изображение отсутствует</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .error-container {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .error-icon {
+            font-size: 64px;
+            margin-bottom: 20px;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .error-message {
+            color: #666;
+            font-size: 1.1rem;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .error-reason {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #ffc107;
+            margin: 20px 0;
+            font-style: italic;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <section class="content error-container">
+            <div class="error-icon">📸</div>
+            <h1 class="title">Изображение отсутствует</h1>
+            <p class="error-message">К сожалению, мы не можем отобразить изображение на этой странице.</p>
+            <div class="error-reason">
+                💰 Бюджет на изображения исчерпан. Возможно, в следующий раз... 😅
+            </div>
+            <nav class="navigation">
+                <a href="index.html" class="link back-link">← Вернуться на главную</a>
+            </nav>
+        </section>
+    </main>
+</body>
+</html>
