@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Спам из 20 разноцветных кнопок">
+    <title>Спам кнопок</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .spam-container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .spam-title {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .spam-subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 30px;
+        }
+
+        .counter-box {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-size: 1.3rem;
+            font-weight: 600;
+        }
+
+        .button-spam {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .spam-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: white;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        }
+
+        .spam-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .spam-btn:active {
+            transform: scale(0.95);
+        }
+
+        .info-box {
+            background: #f0f4ff;
+            padding: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #666;
+        }
+
+        .reset-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 12px 30px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .reset-btn:hover {
+            background: #218838;
+            transform: translateY(-2px);
+        }
+
+        .back-link {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 480px) {
+            .spam-container {
+                padding: 25px;
+            }
+
+            .spam-title {
+                font-size: 1.5rem;
+            }
+
+            .button-spam {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 8px;
+            }
+
+            .spam-btn {
+                padding: 12px;
+                font-size: 0.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="spam-container">
+            <h1 class="spam-title">🔘 Спам кнопок</h1>
+            <p class="spam-subtitle">20 разноцв��тных кнопок, которые ничего полезного не делают!</p>
+            
+            <div class="counter-box">
+                Всего нажатий: <span id="totalClicks">0</span>
+            </div>
+
+            <div class="info-box">
+                ⚠️ Внимание: эти кнопки опасны для здравого смысла! Нажимай на свой риск! 🤪
+            </div>
+
+            <div class="button-spam" id="buttonContainer"></div>
+
+            <button class="reset-btn" onclick="resetCounter()">🔄 Сброс счётчика</button>
+
+            <div class="back-link">
+                <a href="index.html" class="link">← Вернуться на главную</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const colors = [
+            '#667eea', '#764ba2', '#e74c3c', '#3498db', '#2ecc71',
+            '#f39c12', '#9b59b6', '#1abc9c', '#e67e22', '#c0392b',
+            '#2980b9', '#27ae60', '#16a085', '#8e44ad', '#d35400',
+            '#c0392b', '#34495e', '#7f8c8d', '#f1c40f', '#3498db'
+        ];
+
+        const messages = [
+            'Нажата! 🎉',
+            'Ещё одна... 😂',
+            'Продолжаем! 🔥',
+            'Спам зашкаливает! 💥',
+            'Помогите! 🆘',
+            'Это не поможет! 🤷',
+            'Зачем? 🤔',
+            'О нет! 😱',
+            'Опа! 🤡',
+            'Бум! 💣',
+            'Звук хлопка! 👏',
+            'Вжик! ⚡',
+            'Точка зрения кнопки: 😭',
+            'Спам? Спам. 🚨',
+            'Удачи! 🍀'
+        ];
+
+        let totalClicks = 0;
+
+        function createButtons() {
+            const container = document.getElementById('buttonContainer');
+            
+            colors.forEach((color, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'spam-btn';
+                btn.style.background = color;
+                btn.textContent = `Кнопка ${index + 1}`;
+                btn.onclick = () => buttonClicked(btn);
+                container.appendChild(btn);
+            });
+        }
+
+        function buttonClicked(btn) {
+            totalClicks++;
+            document.getElementById('totalClicks').textContent = totalClicks;
+            
+            // Случайная анимация
+            const animation = Math.floor(Math.random() * 4);
+            
+            switch(animation) {
+                case 0:
+                    btn.style.transform = 'rotate(360deg)';
+                    setTimeout(() => {
+                        btn.style.transform = 'scale(1)';
+                    }, 500);
+                    break;
+                case 1:
+                    btn.style.opacity = '0.5';
+                    setTimeout(() => {
+                        btn.style.opacity = '1';
+                    }, 300);
+                    break;
+                case 2:
+                    btn.style.filter = 'brightness(1.5)';
+                    setTimeout(() => {
+                        btn.style.filter = 'brightness(1)';
+                    }, 200);
+                    break;
+                case 3:
+                    btn.textContent = messages[Math.floor(Math.random() * messages.length)];
+                    setTimeout(() => {
+                        btn.textContent = `Кнопка ${Array.from(document.querySelectorAll('.spam-btn')).indexOf(btn) + 1}`;
+                    }, 1000);
+            }
+
+            // Сохраняем счётчик
+            localStorage.setItem('spamClicks', totalClicks);
+        }
+
+        function resetCounter() {
+            totalClicks = 0;
+            document.getElementById('totalClicks').textContent = totalClicks;
+            localStorage.setItem('spamClicks', 0);
+        }
+
+        // Загрузить счётчик
+        const saved = localStorage.getItem('spamClicks');
+        if (saved) {
+            totalClicks = parseInt(saved);
+            document.getElementById('totalClicks').textContent = totalClicks;
+        }
+
+        // Создать кнопки при загрузке
+        createButtons();
+    </script>
+</body>
+</html>
