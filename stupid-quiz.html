@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Самый тупой тест в интернете">
+    <title>Тупой тест</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .quiz-container {
+            max-width: 600px;
+            margin: 40px auto;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+        }
+
+        .quiz-title {
+            color: #667eea;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .question {
+            background: #f0f4ff;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid #667eea;
+        }
+
+        .question-text {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .option-btn {
+            padding: 12px 20px;
+            border: 2px solid #667eea;
+            background: white;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            text-align: left;
+        }
+
+        .option-btn:hover {
+            background: #f0f4ff;
+            transform: translateX(5px);
+        }
+
+        .option-btn.selected {
+            background: #667eea;
+            color: white;
+        }
+
+        .result {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+            border-left: 4px solid #ffc107;
+            display: none;
+        }
+
+        .result.show {
+            display: block;
+        }
+
+        .result-text {
+            font-size: 1.1rem;
+            color: #856404;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .btn-group button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .btn-next {
+            background: #667eea;
+            color: white;
+        }
+
+        .btn-next:hover {
+            background: #764ba2;
+        }
+
+        .btn-restart {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-restart:hover {
+            background: #218838;
+        }
+
+        .progress {
+            text-align: center;
+            color: #999;
+            margin-bottom: 20px;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 480px) {
+            .quiz-container {
+                padding: 25px;
+            }
+
+            .quiz-title {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <main class="container">
+        <div class="quiz-container">
+            <h1 class="quiz-title">🧠 Тупой тест</h1>
+            <div class="progress">Вопрос <span id="currentQuestion">1</span> из <span id="totalQuestions">5</span></div>
+            
+            <div id="quizContent">
+                <div class="question">
+                    <div class="question-text" id="questionText"></div>
+                    <div class="options" id="optionsContainer"></div>
+                </div>
+                <div class="result" id="result">
+                    <div class="result-text" id="resultText"></div>
+                </div>
+                <div class="btn-group">
+                    <button class="btn-next" id="nextBtn" onclick="nextQuestion()">Далее →</button>
+                </div>
+            </div>
+
+            <div id="finalResult" style="display: none; text-align: center;">
+                <div style="font-size: 3rem; margin: 20px 0;">🎉</div>
+                <h2 style="color: #667eea; margin-bottom: 20px;">Результаты теста</h2>
+                <p style="font-size: 1.2rem; margin-bottom: 20px;">Ты набрал <strong id="score">0</strong> тупых баллов из 50!</p>
+                <p id="resultMessage" style="font-size: 1rem; color: #666; margin-bottom: 30px;"></p>
+                <button class="btn-restart" onclick="restartQuiz()">Пройти тест заново</button>
+                <br><br>
+                <a href="index.html" class="link">← Вернуться на главную</a>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const questions = [
+            {
+                question: "Сколько углов у круга?",
+                options: ["Один", "Двадцать семь", "Круглое число", "Зависит от настроения"],
+                correctAnswer: 3
+            },
+            {
+                question: "Какого цвета невидимый слон?",
+                options: ["Прозрачный", "Оранжевый в горошек", "Как вчерашний день", "Не существует"],
+                correctAnswer: 2
+            },
+            {
+                question: "Сколько ушей у треугольника?",
+                options: ["3", "0", "Столько же, сколько я умный", "Зависит от версии ОС"],
+                correctAnswer: 2
+            },
+            {
+                question: "Что будет, если скрестить рыбу с облаком?",
+                options: ["Мокрую рыбу", "Летающего кота", "Ничего, они в разных измерениях", "Логическую ошибку"],
+                correctAnswer: 3
+            },
+            {
+                question: "Почему небо синее?",
+                options: ["Потому что краска закончилась", "Это просто иллюзия", "Потому что оно такое", "Для симметрии с морем"],
+                correctAnswer: 1
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+        let selectedAnswer = null;
+
+        function loadQuestion() {
+            const question = questions[currentQuestionIndex];
+            document.getElementById('questionText').textContent = question.question;
+            document.getElementById('currentQuestion').textContent = currentQuestionIndex + 1;
+            document.getElementById('totalQuestions').textContent = questions.length;
+
+            const optionsContainer = document.getElementById('optionsContainer');
+            optionsContainer.innerHTML = '';
+
+            question.options.forEach((option, index) => {
+                const btn = document.createElement('button');
+                btn.className = 'option-btn';
+                btn.textContent = option;
+                btn.onclick = () => selectAnswer(index);
+                optionsContainer.appendChild(btn);
+            });
+
+            document.getElementById('result').classList.remove('show');
+            selectedAnswer = null;
+        }
+
+        function selectAnswer(index) {
+            selectedAnswer = index;
+            const buttons = document.querySelectorAll('.option-btn');
+            buttons.forEach((btn, i) => {
+                btn.classList.toggle('selected', i === index);
+            });
+        }
+
+        function nextQuestion() {
+            if (selectedAnswer === null) {
+                alert('Выбери ответ, тупик! 🤡');
+                return;
+            }
+
+            const question = questions[currentQuestionIndex];
+            const isCorrect = selectedAnswer === question.correctAnswer;
+
+            if (isCorrect) {
+                score += 10;
+            }
+
+            const resultDiv = document.getElementById('result');
+            const resultText = document.getElementById('resultText');
+            resultText.textContent = isCorrect ? '✅ Чудо! Ты угадал!' : '❌ Ах, ты только погляди — ошибка!';
+            resultDiv.classList.add('show');
+
+            currentQuestionIndex++;
+
+            if (currentQuestionIndex < questions.length) {
+                setTimeout(() => {
+                    loadQuestion();
+                }, 1500);
+            } else {
+                setTimeout(showFinalResult, 1500);
+            }
+        }
+
+        function showFinalResult() {
+            document.getElementById('quizContent').style.display = 'none';
+            document.getElementById('finalResult').style.display = 'block';
+            document.getElementById('score').textContent = score;
+
+            let message = '';
+            if (score === 50) {
+                message = '🏆 Невероятно! Ты король тупости!';
+            } else if (score >= 40) {
+                message = '😎 Неплохо, почти гений глупости!';
+            } else if (score >= 20) {
+                message = '🤔 Среднестатистический уровень тупости';
+            } else {
+                message = '🤡 Ты просто легенда глупости!';
+            }
+
+            document.getElementById('resultMessage').textContent = message;
+        }
+
+        function restartQuiz() {
+            currentQuestionIndex = 0;
+            score = 0;
+            selectedAnswer = null;
+            document.getElementById('quizContent').style.display = 'block';
+            document.getElementById('finalResult').style.display = 'none';
+            loadQuestion();
+        }
+
+        // Загрузить первый вопрос
+        loadQuestion();
+    </script>
+</body>
+</html>
